@@ -29,6 +29,7 @@ pkg/
 vendor/
 
 # IDE specific files
+.gigaide
 .idea/
 .vscode/
 *.swp
