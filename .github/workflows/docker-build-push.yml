@@ -43,33 +43,6 @@ jobs:
       - name: Start services with Docker Compose
         run: docker compose up -d --build
 
-      - name: Wait for services
-        run: |
-          for url in \
-            http://127.0.0.1:8080/health \
-            http://127.0.0.1:8081/api/movies/health \
-            http://127.0.0.1:8082/api/events/health \
-            http://127.0.0.1:8000/health
-          do
-            echo "Checking $url"
-
-            for i in {1..60}; do
-              if curl -fsS "$url"; then
-                echo "$url is ready"
-                break
-              fi
-
-              if [ "$i" -eq 60 ]; then
-                echo "$url is not ready"
-                docker compose ps
-                docker compose logs
-                exit 1
-              fi
-
-              sleep 2
-            done
-          done
-
       - name: Install API test dependencies
         working-directory: tests/postman
         run: npm install
