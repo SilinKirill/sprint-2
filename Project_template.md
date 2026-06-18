@@ -61,8 +61,8 @@
 
 ## Скриншоты проверки
 
-[Postman tests](./docs/screenshots/postman-tests-local.png)
-[Kafka topics](./docs/screenshots/kafka-topics.png)
+[Postman tests](./docs/screenshots/task-2/postman-tests-local.png)
+[Kafka topics](./docs/screenshots/task-2/kafka-topics.png)
 
 ## Задание 3
 
@@ -114,6 +114,7 @@ jobs:
 Как только сборка отработает и в github registry появятся ваши образы, можно переходить к блоку настройки Kubernetes
 Успешным результатом данного шага является "зеленая" сборка и "зеленые" тесты
 
+[GitHub Actions green build](./docs/screenshots/task-3/github-actions-green.png)
 
 ### Proxy в Kubernetes
 
@@ -276,8 +277,11 @@ cat .docker/config.json | base64
   Откройте логи event-service и сделайте скриншот обработки событий
 
 #### Шаг 3
-Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
+Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и скриншот вывода event-service после вызова тестов.
 
+[CinemaAbyss API Movies](./docs/screenshots/task-3/cinemaabyss-api-movies.png)
+[Event service logs](./docs/screenshots/task-3/event-service-logs.png)
+[Postman Kubernetes tests](./docs/screenshots/task-3/postman-tests-kubernetes.png)
 
 ## Задание 4
 Для простоты дальнейшего обновления и развертывания вам как архитектуру необходимо так же реализовать helm-чарты для прокси-сервиса и проверить работу 
