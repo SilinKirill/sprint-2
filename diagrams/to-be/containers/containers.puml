@@ -1,0 +1,79 @@
+@startuml
+
+title Диаграмма контейнеров To-Be системы "Кинобездна"
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "Пользователь", "Смотрит фильмы и управляет подпиской")
+System(CinemaAbyssSystem, "Кинобездна", "Онлайн-кинотеатр-агрегатор")
+
+Container_Boundary(CinemaAbyssSystem, "Кинобездна") {
+    Container(ClientApps, "Клиентские приложения", "Web / Mobile / Smart TV", "Интерфейсы пользователей")
+    Container(ApiGateway, "API Gateway", "HTTP API", "Маршрутизация запросов")
+
+    Container_Boundary(MicroservicesBoundary, "Контур микросервисов") {
+        Container(UserAccessService, "Сервис пользователей и доступа", "Microservice", "Профили и доступ")
+        Container(SubscriptionPaymentService, "Сервис подписок и платежей", "Microservice", "Подписки и платежи")
+        Container(MetadataService, "Сервис метаданных", "Microservice", "Каталог и метаданные")
+        Container(RecommendationService, "Сервис рекомендаций", "Microservice", "Интеграция рекомендаций")
+        Container(ContentService, "Сервис контента", "Microservice", "Доступ к просмотру")
+
+
+        Container(MessageBroker, "Брокер сообщений", "Kafka", "События доменов")
+        Container(Database, "Базы данных сервисов", "PostgreSQL", "Данные сервисов")
+    }
+
+    Container(ObjectStorage, "Объектное хранилище", "S3", "Постеры и баннеры")
+
+    Container_Boundary(LegacyBoundary, "Legacy-контур") {
+        Container(LegacyMonolith, "Монолит", "Go", "Оставшиеся бизнес-функции")
+        ContainerDb(LegacyDatabase, "Legacy DB", "PostgreSQL", "Данные монолита")
+    }
+}
+
+System_Ext(PaymentSystem, "Платёжная система", "Проведение платежей")
+System_Ext(ContentSources, "Онлайн-кинотеатры", "Источники контента")
+System_Ext(LoyaltyMarketing, "Сервисы лояльности", "Скидки и акции")
+Container_Boundary(ExternalRecommendationBoundary, "Внешняя рекомендательная система") {
+  Container_Ext(RecommendationRabbitMq, "Очередь рекомендаций", "RabbitMQ", "Обмен сообщениями")
+  Container_Ext(ExternalRecommendationService, "Сервис рекомендаций", "External System", "Подборки фильмов")
+}
+
+Rel(user, ClientApps, "Использует")
+Rel(ClientApps, ApiGateway, "HTTP")
+
+Rel(ApiGateway, UserAccessService, "Пользователи")
+Rel(ApiGateway, SubscriptionPaymentService, "Подписки")
+Rel(ApiGateway, MetadataService, "Метаданные")
+Rel(ApiGateway, RecommendationService, "Рекомендации")
+Rel(ApiGateway, ContentService, "Контент")
+Rel(ApiGateway, LegacyMonolith, "Legacy-запросы")
+
+Rel(UserAccessService, Database, "Профили")
+Rel(SubscriptionPaymentService, Database, "Подписки и платежи")
+Rel(MetadataService, Database, "Метаданные")
+Rel(RecommendationService, Database, "Рекомендации")
+Rel(ContentService, Database, "Контент")
+
+Rel(UserAccessService, MessageBroker, "События пользователей")
+Rel(SubscriptionPaymentService, MessageBroker, "События платежей")
+Rel(MetadataService, MessageBroker, "События метаданных")
+Rel(RecommendationService, MessageBroker, "События рекомендаций")
+Rel(ContentService, MessageBroker, "События просмотров")
+
+Rel(ContentService, ObjectStorage, "Постеры и баннеры")
+
+Rel(LegacyMonolith, LegacyDatabase, "Legacy-данные")
+Rel(LegacyMonolith, ObjectStorage, "Legacy-файлы")
+
+Rel(SubscriptionPaymentService, PaymentSystem, "Платежи")
+Rel(SubscriptionPaymentService, LoyaltyMarketing, "Скидки")
+Rel(ContentService, ContentSources, "Получение контента")
+
+Rel(RecommendationService, RecommendationRabbitMq, "Рекомендации")
+Rel(LegacyMonolith, RecommendationRabbitMq, "Legacy-рекомендации")
+Rel(RecommendationRabbitMq, ExternalRecommendationService, "Запросы и ответы")
+
+@enduml

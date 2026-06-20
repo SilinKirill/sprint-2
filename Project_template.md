@@ -5,7 +5,7 @@
 1. Спроектируйте to be архитектуру КиноБездны, разделив всю систему на отдельные домены и организовав интеграционное взаимодействие и единую точку вызова сервисов.
 Результат представьте в виде контейнерной диаграммы в нотации С4.
 Добавьте ссылку на файл в этот шаблон
-[ссылка на файл](ссылка)
+[Диаграмма контейнеров To-Be](./diagrams/to-be/containers/containers.puml)
 
 
 ## Задание 2
@@ -59,6 +59,10 @@
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
 
+## Скриншоты проверки
+
+[Postman tests](./docs/screenshots/task-2/postman-tests-local.png)
+[Kafka topics](./docs/screenshots/task-2/kafka-topics.png)
 
 ## Задание 3
 
@@ -110,6 +114,7 @@ jobs:
 Как только сборка отработает и в github registry появятся ваши образы, можно переходить к блоку настройки Kubernetes
 Успешным результатом данного шага является "зеленая" сборка и "зеленые" тесты
 
+[GitHub Actions green build](./docs/screenshots/task-3/github-actions-green.png)
 
 ### Proxy в Kubernetes
 
@@ -272,8 +277,11 @@ cat .docker/config.json | base64
   Откройте логи event-service и сделайте скриншот обработки событий
 
 #### Шаг 3
-Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
+Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и скриншот вывода event-service после вызова тестов.
 
+[CinemaAbyss API Movies](./docs/screenshots/task-3/cinemaabyss-api-movies.png)
+[Event service logs](./docs/screenshots/task-3/event-service-logs.png)
+[Postman Kubernetes tests](./docs/screenshots/task-3/postman-tests-kubernetes.png)
 
 ## Задание 4
 Для простоты дальнейшего обновления и развертывания вам как архитектуру необходимо так же реализовать helm-чарты для прокси-сервиса и проверить работу 
@@ -349,6 +357,7 @@ minikube tunnel
 https://cinemaabyss.example.com/api/movies
 и приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
 
+[Helm deployment and API movies response](./docs/screenshots/task-4/helm-deployment-api-movies.png)
 
 # Задание 5
 Компания планирует активно развиваться и для повышения надежности, безопасности, реализации сетевых паттернов типа Circuit Breaker и канареечного деплоя вам как архитектору необходимо развернуть istio и настроить circuit breaker для monolith и movies сервисов.
@@ -414,6 +423,9 @@ You can see 21 for the upstream_rq_pending_overflow value which means 21 calls s
 ```
 
 Приложите скриншот работы circuit breaker'а
+
+[Circuit Breaker movies-service](./docs/screenshots/task-5/circuit-breaker-movies-service.png)
+[Circuit Breaker monolith](./docs/screenshots/task-5/circuit-breaker-monolith.png)
 
 Удаляем все
 ```bash
